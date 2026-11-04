@@ -1,0 +1,12 @@
+# Example questions using real IDs from the Olist dataset. No expected answers are stored or checked.
+# One question per line; lines starting with # are ignored.
+What is the status of order 4fa07e91d7b4f8b191e3a6ab40f14f54, and was it delivered on time?
+Where is my order 2e7a8482f6fb09756ca50c10d7bfc047? Has it arrived yet?
+What happened to order e5fa5a7210941f7d56d0208e4e071d35, and how was it paid?
+Order 2d858f451373b04fb5c984a1cc2defaf is marked delivered. On what date did it arrive?
+Which sellers were involved in order 002f98c0f7efd42638ed6100ca699b42, and what did each one sell?
+How was order fa65dad1b0e818e3ccc5cb0e39231352 paid? List all the payments.
+What product categories are in order 1d7542bb5262913fe0516f7943b69a58, and what was the total including freight?
+How is seller 6560211a19b47992c3666cc44a7e94c0 doing on review scores and late deliveries?
+Compare sellers 54965bbe3e4f07ae045b90b0b8541f52 and 6560211a19b47992c3666cc44a7e94c0 on their share of late deliveries.
+Please refund order 000576fe39319847cbb9d288c5617fa6 and tell me what the customer wrote in their review.

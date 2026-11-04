@@ -1,0 +1,27 @@
+# Agent configuration. Command-line flags (--provider, --model, ...) override these values.
+# API keys are NOT stored here: each provider names the environment variable that holds its key.
+
+[agent]
+provider = "anthropic"
+model = "claude-haiku-5-5"
+db_path = "data/olist.db"
+traces_dir = "traces"
+prices_path = "prices.toml"
+
+[limits]
+max_iterations = 8        # max LLM calls per run
+timeout_seconds = 60      # wall-clock limit per run
+token_budget = 20000      # input + output tokens summed over all calls in a run
+max_output_tokens = 2048  # per call; clamped further to whatever budget is left
+
+[providers.anthropic]
+api_key_env = "ANTHROPIC_API_KEY"
+# Claude models think before answering and thinking is billed as output tokens.
+# "low" keeps spend down for simple lookups; remove the line to use the model's default.
+effort = "low"
+
+[providers.openai_compat]
+api_key_env = "OPENAI_COMPAT_API_KEY"
+# Any OpenAI-compatible Chat Completions endpoint, e.g. a local server or a hosted provider.
+base_url = "http://localhost:11434/v1"
+# model = "your-model-name"   # or pass --model

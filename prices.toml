@@ -1,0 +1,19 @@
+# Prices in USD per million tokens, used only for ESTIMATED cost in traces and summaries.
+#
+# TODO: verify against the provider's pricing page; these may be out of date.
+#   Anthropic: https://www.anthropic.com/pricing (or https://platform.claude.com/docs/en/about-claude/pricing)
+#
+# A model with no entry here gets no cost estimate (reported as null / "n/a"); nothing is guessed.
+#
+# The entries below are commented out on purpose. The values come from Anthropic's model reference
+# (cached 2026-10-06) and are UNVERIFIED by you. Confirm them, then uncomment.
+# Notes: Claude Haiku 5.5 has a higher rate for prompts over 100K tokens ($0.50 / $2.50); this demo's
+# prompts are far below that. Prompt caching is not used, so cache read/write rates are not needed.
+
+# [models."claude-haiku-5-5"]
+# input_per_mtok = 0.10    # UNVERIFIED
+# output_per_mtok = 0.50   # UNVERIFIED
+
+# [models."claude-sonnet-5-5"]
+# input_per_mtok = 2.00    # UNVERIFIED
+# output_per_mtok = 10.00  # UNVERIFIED
