@@ -1,0 +1,3 @@
+﻿row_id,original_verdict,corrected_verdict,which_claim,found_by
+R2877,no,yes,These 10 add up to 90.33 BRL (exact sum 90.29),second-reader audit blind to condition
+R1183,no,yes,"paid in 29 separate payments, all by voucher (only 10 returned; clarification A)",second-reader audit blind to condition
