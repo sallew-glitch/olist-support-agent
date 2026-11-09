@@ -1,0 +1,573 @@
+row_id	question_id	answer	tools_called	flag	unsupported_claim	which_claim
+R2805	q1	"Order 2d858f451373b04fb5c984a1cc2defaf is listed as delivered, but the system has no delivery date recorded for it, so I can't tell you when it arrived. The estimated delivery date was 2017-06-23. The order was purchased on 2017-05-25 and approved the same evening. It also has no record of being handed to the carrier."	get_delivery_performance		no	
+R9903	q1	"Order 2d858f451373b04fb5c984a1cc2defaf is marked as delivered, but the system has no customer delivery date recorded for it, so I can't tell you the arrival date. The estimated delivery date was 2017-06-23. The order was purchased on 2017-05-25 and approved on the same day, but it has no record of being handed to the carrier."	get_delivery_performance		no	
+R9631	q1	"Order 2d858f451373b04fb5c984a1cc2defaf has the status ""delivered"", but the system has no delivery date for it. The date it reached the customer is blank, and so is the date it was handed to the carrier.
+
+What the record does show:
+- **Purchased:** 2017-05-25 23:22:43
+- **Approved:** 2017-05-25 23:30:16
+- **Estimated delivery date:** 2017-06-23
+
+I can't tell you when it arrived, or whether it was late, because that data is missing."	get_delivery_performance		no	
+R3744	q1	"I can't give you an arrival date. The order is marked delivered, but the system has no delivery date recorded for it. The carrier handoff date is also missing.
+
+These are the dates that are on record:
+- Purchased: 2017-05-25 23:22:43
+- Approved: 2017-05-25 23:30:16
+- Estimated delivery: 2017-06-23"	get_delivery_performance		no	
+R1659	q1	"I can't give you an arrival date. The order is marked as delivered, but the delivery date (delivered to customer) is empty in the data.
+
+Here is what the data does show:
+- Purchased: 2017-05-25 23:22:43
+- Approved: 2017-05-25 23:30:16
+- Handed to carrier: no date recorded
+- Estimated delivery date: 2017-06-23
+
+Because there's no delivery date, I also can't say whether it arrived early or late."	get_delivery_performance		no	
+R1576	q1	"I can't give you an arrival date. The order is marked delivered, but the system has no delivery date recorded for it. The handed-to-carrier date is also missing.
+
+What the record does show:
+- Purchased: 2017-05-25 23:22:43
+- Approved: 2017-05-25 23:30:16
+- Estimated delivery date: 2017-06-23"	get_delivery_performance		no	
+R8792	q1	"The system lists order 2d858f451373b04fb5c984a1cc2defaf as delivered, but it has no delivery date recorded. The delivered-to-customer timestamp is null, so I can't tell you when it arrived.
+
+The order was purchased on 2017-05-25 and had an estimated delivery date of 2017-06-23. The handed-to-carrier date is also missing. The record may be incomplete, so the delivery date may need to be checked with the carrier or the fulfilment team."	get_delivery_performance		no	
+R5088	q1	"The system lists order 2d858f451373b04fb5c984a1cc2defaf as delivered, but it has no delivery date on record. The delivered-to-customer timestamp is null, so I can't tell you when it arrived.
+
+For reference, the order was purchased on 2017-05-25 and had an estimated delivery date of 2017-06-23. The record also has no handed-to-carrier date."	get_delivery_performance		no	
+R7051	q1	"I can't give you an arrival date. The order is marked delivered, but the delivery date (delivered to customer) is blank in the data. The handed-to-carrier date is blank too.
+
+What the record does show:
+- Purchased: 2017-05-25 23:22:43
+- Approved: 2017-05-25 23:30:16
+- Estimated delivery date: 2017-06-23"	get_delivery_performance		no	
+R9681	q1	"The system lists order 2d858f451373b04fb5c984a1cc2defaf as delivered, but it has no delivery date on record. The delivered-to-customer timestamp is missing, so I can't tell you when it arrived.
+
+The order was purchased on 2017-05-25 and had an estimated delivery date of 2017-06-23. The handed-to-carrier date is also missing."	get_delivery_performance		no	
+R2758	q1	"Order 2d858f451373b04fb5c984a1cc2defaf is marked as delivered, but the system has no delivery date recorded for it, so I can't tell you when it arrived. The estimated delivery date was 2017-06-23. The order was purchased on 2017-05-25 and approved the same evening. It also has no record of being handed to the carrier."	get_delivery_performance		no	
+R5260	q1	"Order 2d858f451373b04fb5c984a1cc2defaf is listed as delivered, but the system has no delivery date recorded for it, so I can't tell you when it arrived. The estimated delivery date was 2017-06-23, and the order was handed to the carrier on a date that is also not recorded."	get_delivery_performance		no	
+R6496	q1	"I can't give you an arrival date. The order is marked delivered, but the system has no delivery date recorded for it. The ""delivered to customer"" timestamp is empty, and so is the ""handed to carrier"" timestamp.
+
+Here is what the system does have:
+- Purchased: 2017-05-25 23:22:43
+- Approved: 2017-05-25 23:30:16
+- Estimated delivery date: 2017-06-23
+
+Because there is no delivery date, I also can't tell you whether it arrived early or late."	get_delivery_performance		no	
+R2509	q1	"Order 2d858f451373b04fb5c984a1cc2defaf is listed as delivered, but the system has no delivery date recorded for it, so I can't tell you when it arrived. The estimated delivery date was 2017-06-23. The order was purchased on 2017-05-25 and approved the same evening. It also has no handed-to-carrier date."	get_delivery_performance		no	
+R5095	q1	"The order is marked delivered, but the data has no delivery date. The ""delivered to customer"" timestamp is null, so I can't tell you when it arrived.
+
+Here is what the record does show:
+- Purchased: 2017-05-25 23:22:43
+- Approved: 2017-05-25 23:30:16
+- Handed to carrier: no date recorded
+- Estimated delivery date: 2017-06-23"	get_delivery_performance		no	
+R8424	q1	"I can't give you an arrival date. The order is marked delivered, but the system has no delivery date recorded for it. The carrier handoff date is also missing.
+
+These are the dates it does have:
+- Purchased: 2017-05-25 23:22:43
+- Approved: 2017-05-25 23:30:16
+- Estimated delivery: 2017-06-23"	get_delivery_performance		no	
+R2622	q1	"I can't give you an arrival date. The order is marked delivered, but the system has no delivery date recorded for it. The handed-to-carrier date is also missing.
+
+Here is what the system does have:
+- Purchased: 2017-05-25 23:22:43
+- Approved: 2017-05-25 23:30:16
+- Estimated delivery date: 2017-06-23"	get_delivery_performance		no	
+R8439	q1	"The system lists order 2d858f451373b04fb5c984a1cc2defaf as delivered, but it has no delivery date on record. The delivered-to-customer timestamp is empty, so I can't tell you when it arrived.
+
+The estimated delivery date was 2017-06-23. The order was purchased on 2017-05-25, and its approval and carrier handoff fields are also incomplete (no handoff date is recorded)."	get_delivery_performance		yes	"""and its approval and carrier handoff fields are also incomplete"" (approval field is complete)"
+R4517	q1	"Order 2d858f451373b04fb5c984a1cc2defaf is listed as delivered, but the system has no delivery date recorded for it, so I can't tell you when it arrived. The estimated delivery date was 2017-06-23. The order was purchased on 2017-05-25 and approved the same evening, but it has no record of being handed to the carrier."	get_delivery_performance		no	
+R9114	q1	"I can't give you an arrival date. The order is marked delivered, but the delivery date (delivered to customer) is blank in the records.
+
+What the records do show:
+- Purchased: 2017-05-25 23:22:43
+- Approved: 2017-05-25 23:30:16
+- Handed to carrier: no date recorded
+- Estimated delivery date: 2017-06-23
+
+Because the delivery date is missing, I also can't say whether it arrived early or late."	get_delivery_performance		no	
+R8006	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments in total, with a combined value of 457.99 BRL. The tool lists only the first 10, so I can't see payments 11–29.
+
+The 10 I can see are all vouchers, each with 1 installment:
+
+| # | Type | Value (BRL) |
+|---|------|-------------|
+| 1 | voucher | 3.71 |
+| 2 | voucher | 8.51 |
+| 3 | voucher | 2.95 |
+| 4 | voucher | 29.16 |
+| 5 | voucher | 0.66 |
+| 6 | voucher | 5.02 |
+| 7 | voucher | 0.32 |
+| 8 | voucher | 26.02 |
+| 9 | voucher | 1.08 |
+| 10 | voucher | 12.86 |
+
+These 10 add up to 90.29 BRL. The other 19 payments account for the remaining 367.70 BRL, but I can't tell what payment types or amounts they were."	get_order_payments		no	
+R1769	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments totaling BRL 457.99. The tool returns only the first 10, so I can't list the other 19. All 10 shown are vouchers, each with 1 installment:
+
+1. Voucher: BRL 3.71
+2. Voucher: BRL 8.51
+3. Voucher: BRL 2.95
+4. Voucher: BRL 29.16
+5. Voucher: BRL 0.66
+6. Voucher: BRL 5.02
+7. Voucher: BRL 0.32
+8. Voucher: BRL 26.02
+9. Voucher: BRL 1.08
+10. Voucher: BRL 12.86"	get_order_payments		no	
+R2877	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments, with a total value of 457.99 BRL. The tool lists at most 10 payments, so I can only show the first 10. The other 19 aren't available to me.
+
+All 10 payments shown are vouchers with 1 installment each:
+
+| # | Type | Installments | Value (BRL) |
+|---|------|--------------|-------------|
+| 1 | voucher | 1 | 3.71 |
+| 2 | voucher | 1 | 8.51 |
+| 3 | voucher | 1 | 2.95 |
+| 4 | voucher | 1 | 29.16 |
+| 5 | voucher | 1 | 0.66 |
+| 6 | voucher | 1 | 5.02 |
+| 7 | voucher | 1 | 0.32 |
+| 8 | voucher | 1 | 26.02 |
+| 9 | voucher | 1 | 1.08 |
+| 10 | voucher | 1 | 12.86 |
+
+These 10 add up to 90.33 BRL. I can't tell what payment types the remaining 19 payments used, or how they make up the rest of the 457.99 BRL."	get_order_payments		no	
+R4851	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments totaling BRL 457.99. The tool returned only the first 10, so I can't list the other 19.
+
+All 10 shown are vouchers, each with 1 installment:
+
+| # | Type | Installments | Value (BRL) |
+|---|---|---|---|
+| 1 | voucher | 1 | 3.71 |
+| 2 | voucher | 1 | 8.51 |
+| 3 | voucher | 1 | 2.95 |
+| 4 | voucher | 1 | 29.16 |
+| 5 | voucher | 1 | 0.66 |
+| 6 | voucher | 1 | 5.02 |
+| 7 | voucher | 1 | 0.32 |
+| 8 | voucher | 1 | 26.02 |
+| 9 | voucher | 1 | 1.08 |
+| 10 | voucher | 1 | 12.86 |
+
+These 10 total BRL 90.29, which leaves BRL 367.70 across the remaining 19 payments. I can't see their types from this tool."	get_order_payments		no	
+R8052	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments totaling BRL 457.99. The tool lists only the first 10, all vouchers with one installment each:
+
+1. Voucher: BRL 3.71
+2. Voucher: BRL 8.51
+3. Voucher: BRL 2.95
+4. Voucher: BRL 29.16
+5. Voucher: BRL 0.66
+6. Voucher: BRL 5.02
+7. Voucher: BRL 0.32
+8. Voucher: BRL 26.02
+9. Voucher: BRL 1.08
+10. Voucher: BRL 12.86
+
+These 10 add up to BRL 90.29. The other 19 payments (about BRL 367.70 combined) were not returned, so I can't say how they were paid."	get_order_payments		no	
+R6421	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments totalling R$ 457.99. The lookup returns only the first 10, so I can't list the rest. Those first 10 are all vouchers, each with 1 installment:
+
+| # | Type | Installments | Value (BRL) |
+|---|---|---|---|
+| 1 | voucher | 1 | 3.71 |
+| 2 | voucher | 1 | 8.51 |
+| 3 | voucher | 1 | 2.95 |
+| 4 | voucher | 1 | 29.16 |
+| 5 | voucher | 1 | 0.66 |
+| 6 | voucher | 1 | 5.02 |
+| 7 | voucher | 1 | 0.32 |
+| 8 | voucher | 1 | 26.02 |
+| 9 | voucher | 1 | 1.08 |
+| 10 | voucher | 1 | 12.86 |
+
+The first 10 sum to R$ 90.33, so the remaining 19 payments account for R$ 367.66. I can't see their types from this tool."	get_order_payments		yes	"""The first 10 sum to R$ 90.33, so the remaining 19 payments account for R$ 367.66"" (the first 10 sum is 90.29, and the remaining is 367.7)"
+R5320	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments totaling R$ 457.99, but the system only returned the first 10. Those 10 are all vouchers, each paid in 1 installment:
+
+| # | Type | Installments | Value (BRL) |
+|---|---|---|---|
+| 1 | voucher | 1 | 3.71 |
+| 2 | voucher | 1 | 8.51 |
+| 3 | voucher | 1 | 2.95 |
+| 4 | voucher | 1 | 29.16 |
+| 5 | voucher | 1 | 0.66 |
+| 6 | voucher | 1 | 5.02 |
+| 7 | voucher | 1 | 0.32 |
+| 8 | voucher | 1 | 26.02 |
+| 9 | voucher | 1 | 1.08 |
+| 10 | voucher | 1 | 12.86 |
+
+The 10 listed payments sum to R$ 90.29. The remaining 19 payments (R$ 367.70 combined) were not returned, so I can't say how they were paid."	get_order_payments		no	
+R8761	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments, totaling 457.99 BRL. The tool only returned the first 10, so I can't list the other 19.
+
+The first 10 payments were all vouchers, each with 1 installment:
+
+| # | Type | Value (BRL) |
+|---|------|-------------|
+| 1 | voucher | 3.71 |
+| 2 | voucher | 8.51 |
+| 3 | voucher | 2.95 |
+| 4 | voucher | 29.16 |
+| 5 | voucher | 0.66 |
+| 6 | voucher | 5.02 |
+| 7 | voucher | 0.32 |
+| 8 | voucher | 26.02 |
+| 9 | voucher | 1.08 |
+| 10 | voucher | 12.86 |
+
+These 10 add up to 90.29 BRL. The remaining 19 payments account for the other 367.70 BRL. I can't tell what payment types they were."	get_order_payments		no	
+R6266	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 was paid in 29 separate payments, totalling 457.99 BRL. The tool only returns the first 10 payments, so I can't list the other 19.
+
+The first 10 payments were all vouchers, each with 1 installment:
+
+| # | Type | Value (BRL) |
+|---|------|-------------|
+| 1 | voucher | 3.71 |
+| 2 | voucher | 8.51 |
+| 3 | voucher | 2.95 |
+| 4 | voucher | 29.16 |
+| 5 | voucher | 0.66 |
+| 6 | voucher | 5.02 |
+| 7 | voucher | 0.32 |
+| 8 | voucher | 26.02 |
+| 9 | voucher | 1.08 |
+| 10 | voucher | 12.86 |
+
+These 10 add up to 90.29 BRL. The remaining 19 payments account for the other 367.70 BRL, but I can't see their payment types."	get_order_payments		no	
+R7576	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments totaling BRL 457.99. The tool lists only the first 10, all paid by voucher with 1 installment each:
+
+1. Voucher: BRL 3.71
+2. Voucher: BRL 8.51
+3. Voucher: BRL 2.95
+4. Voucher: BRL 29.16
+5. Voucher: BRL 0.66
+6. Voucher: BRL 5.02
+7. Voucher: BRL 0.32
+8. Voucher: BRL 26.02
+9. Voucher: BRL 1.08
+10. Voucher: BRL 12.86
+
+The listed payments total BRL 90.29. The remaining 19 payments (BRL 367.70) aren't shown, so I can't give their types or values."	get_order_payments		no	
+R2052	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments, with a total value of 457.99 BRL. The tool returned only the first 10, so I can't list the other 19.
+
+The first 10 are all vouchers, each with 1 installment:
+
+| # | Type | Value (BRL) |
+|---|------|-------------|
+| 1 | voucher | 3.71 |
+| 2 | voucher | 8.51 |
+| 3 | voucher | 2.95 |
+| 4 | voucher | 29.16 |
+| 5 | voucher | 0.66 |
+| 6 | voucher | 5.02 |
+| 7 | voucher | 0.32 |
+| 8 | voucher | 26.02 |
+| 9 | voucher | 1.08 |
+| 10 | voucher | 12.86 |
+
+These 10 add up to 90.29 BRL. The other 19 payments make up the remaining 367.70 BRL. I don't know their payment types."	get_order_payments		no	
+R5479	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments, with a total value of 457.99 BRL. The tool lists at most 10 payments, so I can only show the first 10. The other 19 aren't available to me.
+
+All 10 payments shown are vouchers with 1 installment each:
+
+| # | Type | Installments | Value (BRL) |
+|---|------|--------------|-------------|
+| 1 | voucher | 1 | 3.71 |
+| 2 | voucher | 1 | 8.51 |
+| 3 | voucher | 1 | 2.95 |
+| 4 | voucher | 1 | 29.16 |
+| 5 | voucher | 1 | 0.66 |
+| 6 | voucher | 1 | 5.02 |
+| 7 | voucher | 1 | 0.32 |
+| 8 | voucher | 1 | 26.02 |
+| 9 | voucher | 1 | 1.08 |
+| 10 | voucher | 1 | 12.86 |
+
+These 10 add up to 90.33 BRL. The remaining 19 payments account for the other 367.66 BRL. I can't see their payment types."	get_order_payments		yes	"""These 10 add up to 90.33 BRL. The remaining 19 payments account for the other 367.66 BRL."" (the total is 90.29, and the remaining is 367.7)"
+R4318	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 was paid in 29 separate payments, totaling 457.99 BRL. The tool lists only the first 10, so I can't see the other 19.
+
+The 10 I can see are all vouchers, each with 1 installment:
+
+| # | Type | Installments | Value (BRL) |
+|---|------|--------------|-------------|
+| 1 | voucher | 1 | 3.71 |
+| 2 | voucher | 1 | 8.51 |
+| 3 | voucher | 1 | 2.95 |
+| 4 | voucher | 1 | 29.16 |
+| 5 | voucher | 1 | 0.66 |
+| 6 | voucher | 1 | 5.02 |
+| 7 | voucher | 1 | 0.32 |
+| 8 | voucher | 1 | 26.02 |
+| 9 | voucher | 1 | 1.08 |
+| 10 | voucher | 1 | 12.86 |
+
+These 10 add up to 90.29 BRL. The remaining 19 payments account for the other 367.70 BRL, but I can't tell what payment types they used."	get_order_payments		no	
+R5062	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 shows 29 payments, with a total value of 457.99 BRL. The tool lists at most 10 payments, so I can only see the first 10. The other 19 aren't available to me.
+
+The 10 I can see are all vouchers, each with 1 installment:
+
+| # | Value (BRL) |
+|---|---|
+| 1 | 3.71 |
+| 2 | 8.51 |
+| 3 | 2.95 |
+| 4 | 29.16 |
+| 5 | 0.66 |
+| 6 | 5.02 |
+| 7 | 0.32 |
+| 8 | 26.02 |
+| 9 | 1.08 |
+| 10 | 12.86 |
+
+These 10 add up to 90.29 BRL. The remaining 367.70 BRL is spread across the 19 payments I can't see, so I can't tell you their payment types."	get_order_payments		no	
+R4013	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payment records totaling BRL 457.99. The tool returns at most 10, so I can only show the first 10. All 10 shown are vouchers, each with 1 installment:
+
+1. Voucher: BRL 3.71
+2. Voucher: BRL 8.51
+3. Voucher: BRL 2.95
+4. Voucher: BRL 29.16
+5. Voucher: BRL 0.66
+6. Voucher: BRL 5.02
+7. Voucher: BRL 0.32
+8. Voucher: BRL 26.02
+9. Voucher: BRL 1.08
+10. Voucher: BRL 12.86
+
+These 10 add up to BRL 90.29. The remaining 19 payments, worth BRL 367.70 in total, are not returned by the tool, so I can't say how they were paid."	get_order_payments		no	
+R8284	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments totaling BRL 457.99, but the system only returns the first 10. Those 10 are all vouchers, each with 1 installment:
+
+| # | Type | Installments | Value (BRL) |
+|---|---|---|---|
+| 1 | voucher | 1 | 3.71 |
+| 2 | voucher | 1 | 8.51 |
+| 3 | voucher | 1 | 2.95 |
+| 4 | voucher | 1 | 29.16 |
+| 5 | voucher | 1 | 0.66 |
+| 6 | voucher | 1 | 5.02 |
+| 7 | voucher | 1 | 0.32 |
+| 8 | voucher | 1 | 26.02 |
+| 9 | voucher | 1 | 1.08 |
+| 10 | voucher | 1 | 12.86 |
+
+The first 10 add up to BRL 90.29. The other 19 payments are not available from this tool, so I can't list them or confirm how they were paid."	get_order_payments		no	
+R6407	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments totaling BRL 457.99. The system returned only the first 10:
+
+| # | Type | Installments | Value (BRL) |
+|---|---|---|---|
+| 1 | voucher | 1 | 3.71 |
+| 2 | voucher | 1 | 8.51 |
+| 3 | voucher | 1 | 2.95 |
+| 4 | voucher | 1 | 29.16 |
+| 5 | voucher | 1 | 0.66 |
+| 6 | voucher | 1 | 5.02 |
+| 7 | voucher | 1 | 0.32 |
+| 8 | voucher | 1 | 26.02 |
+| 9 | voucher | 1 | 1.08 |
+| 10 | voucher | 1 | 12.86 |
+
+The remaining 19 payments aren't in the response, so I can't list them. The shown payments are all vouchers, and their subtotal is 90.29 BRL. The BRL 457.99 total covers all 29 payments."	get_order_payments		no	
+R7400	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments in total, with a total value of 457.99 BRL. The tool only returned the first 10, so I can't see the other 19.
+
+The 10 I can see are all vouchers, each with 1 installment:
+
+| # | Type | Value (BRL) |
+|---|---|---|
+| 1 | voucher | 3.71 |
+| 2 | voucher | 8.51 |
+| 3 | voucher | 2.95 |
+| 4 | voucher | 29.16 |
+| 5 | voucher | 0.66 |
+| 6 | voucher | 5.02 |
+| 7 | voucher | 0.32 |
+| 8 | voucher | 26.02 |
+| 9 | voucher | 1.08 |
+| 10 | voucher | 12.86 |
+
+These 10 add up to 90.29 BRL. The remaining 367.70 BRL is spread across the 19 payments I can't see, so I can't say what payment types they used."	get_order_payments		no	
+R1183	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 was paid in 29 separate payments, all by voucher, totalling BRL 457.99.
+
+The tool returned only the first 10 payments. Those are listed below, and together they come to BRL 90.29. I can't retrieve the remaining 19.
+
+| # | Type | Installments | Value (BRL) |
+|---|---|---|---|
+| 1 | voucher | 1 | 3.71 |
+| 2 | voucher | 1 | 8.51 |
+| 3 | voucher | 1 | 2.95 |
+| 4 | voucher | 1 | 29.16 |
+| 5 | voucher | 1 | 0.66 |
+| 6 | voucher | 1 | 5.02 |
+| 7 | voucher | 1 | 0.32 |
+| 8 | voucher | 1 | 26.02 |
+| 9 | voucher | 1 | 1.08 |
+| 10 | voucher | 1 | 12.86 |"	get_order_payments		no	
+R7272	q2	"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments, totaling 457.99 BRL. The tool only returned the first 10, so I can't list the other 19.
+
+The first 10 were all vouchers, each with 1 installment:
+
+| # | Type | Value (BRL) |
+|---|------|-------------|
+| 1 | voucher | 3.71 |
+| 2 | voucher | 8.51 |
+| 3 | voucher | 2.95 |
+| 4 | voucher | 29.16 |
+| 5 | voucher | 0.66 |
+| 6 | voucher | 5.02 |
+| 7 | voucher | 0.32 |
+| 8 | voucher | 26.02 |
+| 9 | voucher | 1.08 |
+| 10 | voucher | 12.86 |
+
+These 10 add up to 90.29 BRL. The remaining 367.70 BRL is spread across the 19 payments I can't see, so I don't know their types."	get_order_payments		no	
+R6515	q3	"**Order e5fa5a7210941f7d56d0208e4e071d35 was canceled.**
+
+- **Purchased:** 2016-09-05 00:15:34 (1 item)
+- **Approved:** 2016-10-07 13:17:15
+- **Handed to carrier:** no date recorded
+- **Delivered:** no date recorded
+- **Estimated delivery:** 2016-10-28
+
+**Payment:** one credit card payment of 75.06 BRL, split into 3 installments.
+
+The data doesn't say why the order was canceled. I also can't see whether the payment was refunded, and I can't change or refund anything."	get_order_status; get_delivery_performance; get_order_payments		no	
+R3345	q3	"Order e5fa5a7210941f7d56d0208e4e071d35 was **canceled**. It was purchased on 2016-09-05 00:15:34 and approved on 2016-10-07 13:17:15. It was never handed to the carrier or delivered, and the estimated delivery date was 2016-10-28.
+
+It was paid with one credit card payment of BRL 75.06, made in 3 installments."	get_order_status; get_delivery_performance; get_order_payments		no	
+R1443	q3	"**Status:** The order was canceled. It contained 1 item.
+
+**Timeline:**
+- Purchased: 2016-09-05 00:15:34
+- Approved: 2016-10-07 13:17:15
+- Handed to carrier: no date recorded
+- Delivered: no date recorded
+- Estimated delivery: 2016-10-28
+
+The order never shipped and was never delivered.
+
+**Payment:** One credit card payment of 75.06 BRL, split into 3 installments.
+
+I can't tell you why it was canceled, because the data doesn't include a reason. I also can't change or refund orders."	get_order_status; get_order_payments; get_delivery_performance		unclear	"""The order never shipped"" (we don’t know if it was shipped or not from the tools, do we)"
+R5869	q3	"**Status:** The order was canceled. It had 1 item.
+
+**Timeline:**
+- Purchased: 2016-09-05 00:15:34
+- Approved: 2016-10-07 13:17:15
+- Handed to carrier: no date recorded
+- Delivered: no date recorded
+- Estimated delivery: 2016-10-28
+
+**Payment:** One credit card payment of 75.06 BRL, split into 3 installments.
+
+The data doesn't say why the order was canceled. I also can't see whether the payment was refunded, and I can't change or refund orders."	get_order_status; get_delivery_performance; get_order_payments		no	
+R8816	q3	"Order e5fa5a7210941f7d56d0208e4e071d35 was **canceled**. It was purchased on 2016-09-05 at 00:15:34 and contains 1 item.
+
+It was paid by a single credit card payment of BRL 75.06, made in 3 installments."	get_order_status; get_order_payments		no	
+R3025	q3	"Order e5fa5a7210941f7d56d0208e4e071d35 was **canceled**. It was purchased on 2016-09-05 00:15:34 and contains 1 item.
+
+It was paid by a single credit card payment of BRL 75.06, made in 3 installments."	get_order_status; get_order_payments		no	
+R5305	q3	"Order e5fa5a7210941f7d56d0208e4e071d35 was **canceled**. It was purchased on 2016-09-05 00:15:34 and contains 1 item.
+
+It was paid by a single credit card payment of BRL 75.06, made in 3 installments.
+
+I can't see the cancellation reason or any refund details in the available data."	get_order_status; get_order_payments		no	
+R5809	q3	"**What happened:** The order was **canceled**. It had 1 item.
+- Purchased: 2016-09-05 00:15:34
+- Approved: 2016-10-07 13:17:15
+- Handed to carrier: no date recorded
+- Delivered: no date recorded
+- Estimated delivery: 2016-10-28
+
+The data doesn't say why it was canceled.
+
+**Payment:** One credit card payment of 75.06 BRL, split into 3 installments.
+
+I can't cancel, refund, or change anything. My tools are read-only."	get_order_status; get_order_payments; get_delivery_performance		no	
+R1370	q3	"Order e5fa5a7210941f7d56d0208e4e071d35 was canceled. It was purchased on 2016-09-05 00:15:34 and approved on 2016-10-07 13:17:15. It was never handed to the carrier, and no customer delivery date is recorded. The estimated delivery date was 2016-10-28.
+
+It was paid in full by one credit card payment of BRL 75.06, made in 3 installments."	get_order_status; get_delivery_performance; get_order_payments		yes	"""It was paid in full"" (get_order_items wasn’t called)"
+R1231	q3	"Order e5fa5a7210941f7d56d0208e4e071d35 was **canceled**. It was purchased on 2016-09-05 00:15:34 and contains 1 item.
+
+It was paid in full by credit card: a single payment of R$ 75.06 in 3 installments."	get_order_status; get_order_payments		yes	"""It was paid in full"" (get_order_items wasn’t called)"
+R3796	q3	"Order e5fa5a7210941f7d56d0208e4e071d35 was **canceled**. It was purchased on 2016-09-05 00:15:34 and contains 1 item. The order was approved on 2016-10-07 13:17:15, but it was never handed to the carrier or delivered. The estimated delivery date was 2016-10-28.
+
+It was paid in full by **credit card** in **3 installments**, for a total of **BRL 75.06**.
+
+I can't cancel, refund or change orders. For a refund, please contact the seller or your payment provider."	get_order_status; get_order_payments; get_delivery_performance		yes	"""It was paid in full"" (get_order_items wasn’t called)"
+R8153	q3	"**What happened:** The order was canceled. It had 1 item.
+- Purchased: 2016-09-05 00:15:34
+- Approved: 2016-10-07 13:17:15
+- Handed to carrier: no date recorded
+- Delivered: no date recorded
+- Estimated delivery date: 2016-10-28
+
+The data doesn't say why it was canceled.
+
+**Payment:** One credit card payment of 75.06 BRL, split into 3 installments.
+
+I can only read order data. I can't change the order or issue a refund."	get_order_status; get_order_payments; get_delivery_performance		no	
+R2178	q3	"Order e5fa5a7210941f7d56d0208e4e071d35 was **canceled**. It was purchased on 2016-09-05 00:15:34 and has 1 item. The order was approved on 2016-10-07 13:17:15, but it was never handed to the carrier and no delivery date is recorded. The estimated delivery date was 2016-10-28.
+
+It was paid in full by **credit card** in 3 installments, for a total of BRL 75.06.
+
+I can't cancel, refund, or change orders with my tools."	get_order_status; get_order_payments; get_delivery_performance		yes	"""It was paid in full"" (get_order_items wasn’t called)"
+R8486	q3	"Order e5fa5a7210941f7d56d0208e4e071d35 was **canceled**. It was purchased on 2016-09-05 00:15:34 and contains 1 item.
+
+It was paid by a single credit card payment of BRL 75.06, made in 3 installments."	get_order_status; get_order_payments		no	
+R7993	q3	"**Order e5fa5a7210941f7d56d0208e4e071d35 was canceled.**
+
+- **Purchased:** 2016-09-05 00:15:34 (1 item)
+- **Approved:** 2016-10-07 13:17:15
+- **Handed to carrier:** no date recorded
+- **Delivered:** no date recorded
+- **Estimated delivery:** 2016-10-28
+
+**Payment:** one credit card payment of 75.06 BRL, split into 3 installments.
+
+I can't see why the order was canceled. I also can't see whether the payment was refunded, and my tools are read-only, so I can't change or refund anything."	get_order_status; get_delivery_performance; get_order_payments		no	
+R9270	q3	"Order e5fa5a7210941f7d56d0208e4e071d35 was **canceled**. It was purchased on 2016-09-05 at 00:15:34 and contains 1 item.
+
+Payment: one credit card payment of BRL 75.06, paid in 3 installments."	get_order_status; get_order_payments		no	
+R7522	q3	"**Order e5fa5a7210941f7d56d0208e4e071d35 was canceled.**
+
+- It was purchased on 2016-09-05 00:15:34 and contained 1 item.
+- It was approved on 2016-10-07 13:17:15.
+- It was never handed to the carrier or delivered. Those fields are empty.
+- The estimated delivery date was 2016-10-28.
+
+**Payment:** One credit card payment of 75.06 BRL, split into 3 installments.
+
+I can't see why the order was canceled. I also can't tell whether the payment was refunded, because my tools are read-only and don't show that."	get_order_status; get_delivery_performance; get_order_payments		no	
+R3406	q3	"**Status:** The order was canceled. It contained 1 item.
+
+**Timeline:**
+- Purchased: 2016-09-05 00:15:34
+- Approved: 2016-10-07 13:17:15
+- Handed to carrier: no date recorded
+- Delivered: no date recorded, so it never reached the customer
+- Estimated delivery date: 2016-10-28
+
+**Payment:** One credit card payment of 75.06 BRL, split into 3 installments.
+
+The data doesn't say why the order was canceled. I also can't tell whether the payment was refunded. My tools are read-only, so I can't change or refund anything."	get_order_status; get_order_payments; get_delivery_performance		no	
+R5389	q3	"**Status:** The order was canceled. It had 1 item.
+
+**Timeline:**
+- Purchased: 2016-09-05 00:15:34
+- Approved: 2016-10-07 13:17:15
+- Handed to carrier: no date recorded
+- Delivered: no date recorded
+- Estimated delivery: 2016-10-28
+
+**Payment:** One credit card payment of 75.06 BRL, split into 3 installments.
+
+The data doesn't say why the order was canceled. I also can't see whether the payment was refunded, and I can't issue refunds myself."	get_order_status; get_delivery_performance; get_order_payments		no	
+R5720	q3	"**Order e5fa5a7210941f7d56d0208e4e071d35 was canceled.**
+- It was purchased on 2016-09-05 00:15:34 and contained 1 item.
+- It was approved on 2016-10-07 13:17:15.
+- It was never handed to the carrier or delivered. Both fields are empty.
+- The estimated delivery date was 2016-10-28.
+
+**Payment:** one credit card payment of 75.06 BRL, split into 3 installments.
+
+I can't see why it was canceled. I also can't tell whether the payment was refunded, because my tools are read-only and don't show that."	get_order_status; get_delivery_performance; get_order_payments		no	
