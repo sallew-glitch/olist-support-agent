@@ -282,9 +282,22 @@ def write_sheet(out_dir: Path, sheet: list[dict], key: list[dict], force: bool =
     write_csv(out_dir / "key.csv", KEY_COLUMNS, key)
 
 
+def csv_format(path: Path) -> tuple[str, str]:
+    """(encoding, delimiter) of a sheet: as written by write_csv, or after Excel re-saved it
+    (Excel on Windows may save as Windows-1252 and/or tab-delimited text)."""
+    raw = Path(path).read_bytes()
+    try:
+        text, encoding = raw.decode("utf-8-sig"), "utf-8"
+    except UnicodeDecodeError:
+        text, encoding = raw.decode("cp1252"), "cp1252"
+    header = text.split("\n", 1)[0]
+    return encoding, "\t" if header.count("\t") > header.count(",") else ","
+
+
 def read_csv(path: Path) -> list[dict]:
-    with open(path, encoding="utf-8-sig", newline="") as f:
-        return list(csv.DictReader(f))
+    encoding, delimiter = csv_format(path)
+    with open(path, encoding="utf-8-sig" if encoding == "utf-8" else encoding, newline="") as f:
+        return list(csv.DictReader(f, delimiter=delimiter))
 
 
 # --- analysis ----------------------------------------------------------------

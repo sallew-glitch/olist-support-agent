@@ -1,3 +1,4 @@
+import csv
 import json
 import random
 
@@ -223,6 +224,32 @@ def test_analysis_counts_scores(finished, tmp_path):
     totals = [l.split() for l in lines[start:start + 4]]
     # Columns: model hints N yes no unclear blank invalid. N=3 each (repeats=1, 3 questions), all unclear.
     assert sorted((t[0], t[1], t[2], t[5]) for t in totals) == sorted((m, h, "3", "3") for m in ex.MODELS for h in ex.HINTS)
+
+
+def test_reads_sheet_resaved_by_excel(finished, tmp_path):
+    """Excel on Windows can re-save the sheet as Windows-1252, tab-delimited text."""
+    folder, _ = finished
+    sheet, key = ex.build_sheet(folder, random.Random(0))
+    sheet[0]["answer"] = "Delivered 2018–01–15 in São Paulo"  # en dash and ã exist in cp1252
+    for row in sheet:
+        row["unsupported_claim"] = "no"
+    path = tmp_path / "sheet.csv"
+    with open(path, "w", encoding="cp1252", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=ex.SHEET_COLUMNS, delimiter="\t")
+        writer.writeheader()
+        writer.writerows(sheet)
+    assert ex.csv_format(path) == ("cp1252", "\t")
+    rows = ex.read_csv(path)
+    assert [r["row_id"] for r in rows] == [r["row_id"] for r in sheet]
+    assert rows[0]["answer"] == "Delivered 2018–01–15 in São Paulo"
+    assert "WARNING" not in "\n".join(ex.analyze(rows, key))
+
+
+def test_reads_sheet_as_written(finished, tmp_path):
+    folder, _ = finished
+    sheet, key = ex.build_sheet(folder, random.Random(0))
+    ex.write_sheet(tmp_path, sheet, key)
+    assert ex.csv_format(tmp_path / "sheet.csv") == ("utf-8", ",")
 
 
 def test_duplicate_count():
