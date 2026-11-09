@@ -7,6 +7,9 @@ data/
 # Run traces
 traces/
 
+# Local reading aid for re-scoring (regenerated from scoring/rescore_sheet.csv)
+scoring/rescore_readable.md
+
 # Python
 .venv/
 __pycache__/
