@@ -1,0 +1,163 @@
+﻿row_id,question_id,answer,tools_called,flag,unsupported_claim,which_claim
+S8011,q2,"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments, with a total value of 457.99 BRL. The tool lists at most 10 payments, so I can only show the first 10. The other 19 aren't available to me.
+
+All 10 payments shown are vouchers with 1 installment each:
+
+| # | Type | Installments | Value (BRL) |
+|---|------|--------------|-------------|
+| 1 | voucher | 1 | 3.71 |
+| 2 | voucher | 1 | 8.51 |
+| 3 | voucher | 1 | 2.95 |
+| 4 | voucher | 1 | 29.16 |
+| 5 | voucher | 1 | 0.66 |
+| 6 | voucher | 1 | 5.02 |
+| 7 | voucher | 1 | 0.32 |
+| 8 | voucher | 1 | 26.02 |
+| 9 | voucher | 1 | 1.08 |
+| 10 | voucher | 1 | 12.86 |
+
+These 10 add up to 90.33 BRL. I can't tell what payment types the remaining 19 payments used, or how they make up the rest of the 457.99 BRL.",get_order_payments,,,
+S6091,q1,"Order 2d858f451373b04fb5c984a1cc2defaf is listed as delivered, but the system has no delivery date recorded for it, so I can't tell you when it arrived. The estimated delivery date was 2017-06-23, and the order was handed to the carrier on a date that is also not recorded.",get_delivery_performance,,,
+S5244,q2,"Order fa65dad1b0e818e3ccc5cb0e39231352 was paid in 29 separate payments, totaling 457.99 BRL. The tool lists only the first 10, so I can't see the other 19.
+
+The 10 I can see are all vouchers, each with 1 installment:
+
+| # | Type | Installments | Value (BRL) |
+|---|------|--------------|-------------|
+| 1 | voucher | 1 | 3.71 |
+| 2 | voucher | 1 | 8.51 |
+| 3 | voucher | 1 | 2.95 |
+| 4 | voucher | 1 | 29.16 |
+| 5 | voucher | 1 | 0.66 |
+| 6 | voucher | 1 | 5.02 |
+| 7 | voucher | 1 | 0.32 |
+| 8 | voucher | 1 | 26.02 |
+| 9 | voucher | 1 | 1.08 |
+| 10 | voucher | 1 | 12.86 |
+
+These 10 add up to 90.29 BRL. The remaining 19 payments account for the other 367.70 BRL, but I can't tell what payment types they used.",get_order_payments,,,
+S6743,q3,"Order e5fa5a7210941f7d56d0208e4e071d35 was canceled. It was purchased on 2016-09-05 00:15:34 and approved on 2016-10-07 13:17:15. It was never handed to the carrier, and no customer delivery date is recorded. The estimated delivery date was 2016-10-28.
+
+It was paid in full by one credit card payment of BRL 75.06, made in 3 installments.",get_order_status; get_delivery_performance; get_order_payments,,,
+S7104,q3,"Order e5fa5a7210941f7d56d0208e4e071d35 was **canceled**. It was purchased on 2016-09-05 00:15:34 and contains 1 item.
+
+It was paid by a single credit card payment of BRL 75.06, made in 3 installments.
+
+I can't see the cancellation reason or any refund details in the available data.",get_order_status; get_order_payments,,,
+S7776,q2,"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments in total, with a total value of 457.99 BRL. The tool only returned the first 10, so I can't see the other 19.
+
+The 10 I can see are all vouchers, each with 1 installment:
+
+| # | Type | Value (BRL) |
+|---|---|---|
+| 1 | voucher | 3.71 |
+| 2 | voucher | 8.51 |
+| 3 | voucher | 2.95 |
+| 4 | voucher | 29.16 |
+| 5 | voucher | 0.66 |
+| 6 | voucher | 5.02 |
+| 7 | voucher | 0.32 |
+| 8 | voucher | 26.02 |
+| 9 | voucher | 1.08 |
+| 10 | voucher | 12.86 |
+
+These 10 add up to 90.29 BRL. The remaining 367.70 BRL is spread across the 19 payments I can't see, so I can't say what payment types they used.",get_order_payments,,,
+S3505,q3,"Order e5fa5a7210941f7d56d0208e4e071d35 was **canceled**. It was purchased on 2016-09-05 00:15:34 and has 1 item. The order was approved on 2016-10-07 13:17:15, but it was never handed to the carrier and no delivery date is recorded. The estimated delivery date was 2016-10-28.
+
+It was paid in full by **credit card** in 3 installments, for a total of BRL 75.06.
+
+I can't cancel, refund, or change orders with my tools.",get_order_status; get_order_payments; get_delivery_performance,,,
+S4835,q2,"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments totaling BRL 457.99. The system returned only the first 10:
+
+| # | Type | Installments | Value (BRL) |
+|---|---|---|---|
+| 1 | voucher | 1 | 3.71 |
+| 2 | voucher | 1 | 8.51 |
+| 3 | voucher | 1 | 2.95 |
+| 4 | voucher | 1 | 29.16 |
+| 5 | voucher | 1 | 0.66 |
+| 6 | voucher | 1 | 5.02 |
+| 7 | voucher | 1 | 0.32 |
+| 8 | voucher | 1 | 26.02 |
+| 9 | voucher | 1 | 1.08 |
+| 10 | voucher | 1 | 12.86 |
+
+The remaining 19 payments aren't in the response, so I can't list them. The shown payments are all vouchers, and their subtotal is 90.29 BRL. The BRL 457.99 total covers all 29 payments.",get_order_payments,,,
+S2133,q3,"Order e5fa5a7210941f7d56d0208e4e071d35 was **canceled**. It was purchased on 2016-09-05 at 00:15:34 and contains 1 item.
+
+It was paid by a single credit card payment of BRL 75.06, made in 3 installments.",get_order_status; get_order_payments,,,
+S2468,q3,"Order e5fa5a7210941f7d56d0208e4e071d35 was **canceled**. It was purchased on 2016-09-05 00:15:34 and contains 1 item.
+
+It was paid in full by credit card: a single payment of R$ 75.06 in 3 installments.",get_order_status; get_order_payments,,,
+S8076,q2,"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments totalling R$ 457.99. The lookup returns only the first 10, so I can't list the rest. Those first 10 are all vouchers, each with 1 installment:
+
+| # | Type | Installments | Value (BRL) |
+|---|---|---|---|
+| 1 | voucher | 1 | 3.71 |
+| 2 | voucher | 1 | 8.51 |
+| 3 | voucher | 1 | 2.95 |
+| 4 | voucher | 1 | 29.16 |
+| 5 | voucher | 1 | 0.66 |
+| 6 | voucher | 1 | 5.02 |
+| 7 | voucher | 1 | 0.32 |
+| 8 | voucher | 1 | 26.02 |
+| 9 | voucher | 1 | 1.08 |
+| 10 | voucher | 1 | 12.86 |
+
+The first 10 sum to R$ 90.33, so the remaining 19 payments account for R$ 367.66. I can't see their types from this tool.",get_order_payments,,,
+S9205,q1,"I can't give you an arrival date. The order is marked delivered, but the delivery date (delivered to customer) is blank in the data. The handed-to-carrier date is blank too.
+
+What the record does show:
+- Purchased: 2017-05-25 23:22:43
+- Approved: 2017-05-25 23:30:16
+- Estimated delivery date: 2017-06-23",get_delivery_performance,,,
+S4361,q1,"The system lists order 2d858f451373b04fb5c984a1cc2defaf as delivered, but it has no delivery date on record. The delivered-to-customer timestamp is empty, so I can't tell you when it arrived.
+
+The estimated delivery date was 2017-06-23. The order was purchased on 2017-05-25, and its approval and carrier handoff fields are also incomplete (no handoff date is recorded).",get_delivery_performance,,,
+S4497,q1,"Order 2d858f451373b04fb5c984a1cc2defaf is listed as delivered, but the system has no delivery date recorded for it, so I can't tell you when it arrived. The estimated delivery date was 2017-06-23. The order was purchased on 2017-05-25 and approved the same evening. It also has no record of being handed to the carrier.",get_delivery_performance,,,
+S9546,q2,"Order fa65dad1b0e818e3ccc5cb0e39231352 has 29 payments, with a total value of 457.99 BRL. The tool lists at most 10 payments, so I can only show the first 10. The other 19 aren't available to me.
+
+All 10 payments shown are vouchers with 1 installment each:
+
+| # | Type | Installments | Value (BRL) |
+|---|------|--------------|-------------|
+| 1 | voucher | 1 | 3.71 |
+| 2 | voucher | 1 | 8.51 |
+| 3 | voucher | 1 | 2.95 |
+| 4 | voucher | 1 | 29.16 |
+| 5 | voucher | 1 | 0.66 |
+| 6 | voucher | 1 | 5.02 |
+| 7 | voucher | 1 | 0.32 |
+| 8 | voucher | 1 | 26.02 |
+| 9 | voucher | 1 | 1.08 |
+| 10 | voucher | 1 | 12.86 |
+
+These 10 add up to 90.33 BRL. The remaining 19 payments account for the other 367.66 BRL. I can't see their payment types.",get_order_payments,,,
+S1705,q3,"Order e5fa5a7210941f7d56d0208e4e071d35 was **canceled**. It was purchased on 2016-09-05 00:15:34 and contains 1 item.
+
+It was paid by a single credit card payment of BRL 75.06, made in 3 installments.",get_order_status; get_order_payments,,,
+S7998,q1,"The system lists order 2d858f451373b04fb5c984a1cc2defaf as delivered, but it has no delivery date on record. The delivered-to-customer timestamp is missing, so I can't tell you when it arrived.
+
+The order was purchased on 2017-05-25 and had an estimated delivery date of 2017-06-23. The handed-to-carrier date is also missing.",get_delivery_performance,,,
+S8232,q3,"Order e5fa5a7210941f7d56d0208e4e071d35 was **canceled**. It was purchased on 2016-09-05 00:15:34 and approved on 2016-10-07 13:17:15. It was never handed to the carrier or delivered, and the estimated delivery date was 2016-10-28.
+
+It was paid with one credit card payment of BRL 75.06, made in 3 installments.",get_order_status; get_delivery_performance; get_order_payments,,,
+S4470,q3,"Order e5fa5a7210941f7d56d0208e4e071d35 was **canceled**. It was purchased on 2016-09-05 00:15:34 and contains 1 item. The order was approved on 2016-10-07 13:17:15, but it was never handed to the carrier or delivered. The estimated delivery date was 2016-10-28.
+
+It was paid in full by **credit card** in **3 installments**, for a total of **BRL 75.06**.
+
+I can't cancel, refund or change orders. For a refund, please contact the seller or your payment provider.",get_order_status; get_order_payments; get_delivery_performance,,,
+S8379,q3,"**Status:** The order was canceled. It contained 1 item.
+
+**Timeline:**
+- Purchased: 2016-09-05 00:15:34
+- Approved: 2016-10-07 13:17:15
+- Handed to carrier: no date recorded
+- Delivered: no date recorded
+- Estimated delivery: 2016-10-28
+
+The order never shipped and was never delivered.
+
+**Payment:** One credit card payment of 75.06 BRL, split into 3 installments.
+
+I can't tell you why it was canceled, because the data doesn't include a reason. I also can't change or refund orders.",get_order_status; get_order_payments; get_delivery_performance,,,
