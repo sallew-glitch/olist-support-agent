@@ -20,6 +20,7 @@ def add_common_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--max-iterations", type=int, help="Max LLM calls per run")
     parser.add_argument("--timeout", type=float, help="Wall-clock seconds per run")
     parser.add_argument("--token-budget", type=int, help="Max input+output tokens per run")
+    parser.add_argument("--hints", choices=("on", "off"), help="Show hint fields to the model (default: on)")
 
 
 class Session:
@@ -35,14 +36,17 @@ class Session:
             max_iterations=args.max_iterations,
             timeout_seconds=args.timeout,
             token_budget=args.token_budget,
+            hints=args.hints,
         )
         self.conn = connect_readonly(self.settings.db_path)
         self.prices = load_prices(self.settings.prices_path)
         self.llm = make_client(self.settings.provider, self.settings.model, self.settings.provider_options)
 
-    def ask(self, question: str) -> RunResult:
-        with Tracer(self.settings.traces_dir) as tracer:
-            return run_agent(question, self.llm, self.conn, self.settings.limits, tracer, prices=self.prices)
+    def ask(self, question: str, traces_dir=None) -> RunResult:
+        with Tracer(traces_dir or self.settings.traces_dir) as tracer:
+            return run_agent(
+                question, self.llm, self.conn, self.settings.limits, tracer, prices=self.prices, hints=self.settings.hints
+            )
 
 
 def format_cost(result: RunResult, model: str) -> str:
@@ -64,8 +68,9 @@ def print_result(result: RunResult, session: Session, verbose: bool) -> None:
         print(f"[No final answer: stopped by {result.stop_reason}]")
     if result.error:
         print(f"[Error: {result.error}]", file=sys.stderr)
+    hints = "" if session.settings.hints else " | hints: off"
     print(
-        f"\n[{session.settings.provider}/{session.settings.model} | stop: {result.stop_reason} | "
+        f"\n[{session.settings.provider}/{session.settings.model}{hints} | stop: {result.stop_reason} | "
         f"iterations: {result.iterations} | tokens: {result.input_tokens} in / {result.output_tokens} out | "
         f"cost: {format_cost(result, session.settings.model)} | trace: {result.trace_path.name}]"
     )

@@ -80,6 +80,9 @@ class OpenAICompatClient(LLMClient):
         # Local servers often need no key, but the SDK requires a non-empty string.
         self._client = openai.OpenAI(base_url=base_url, api_key=api_key or "not-set", max_retries=0)
 
+    def request_params(self) -> dict:
+        return {"model": self.model, "base_url": str(self._client.base_url), "sampling_params_sent": []}
+
     def complete(self, system, messages, tools, max_tokens, timeout) -> LLMResponse:
         try:
             response = self._client.chat.completions.create(

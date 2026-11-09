@@ -20,6 +20,7 @@ class Settings:
     prices_path: Path
     limits: Limits
     provider_options: dict  # the [providers.<provider>] table from the config
+    hints: bool = True  # False hides hint fields from the model (see agent.tools.apply_hints)
 
 
 def load_dotenv(path: Path) -> None:
@@ -45,6 +46,7 @@ def load_settings(
     max_iterations: int | None = None,
     timeout_seconds: float | None = None,
     token_budget: int | None = None,
+    hints: str | None = None,
 ) -> Settings:
     config_path = Path(config_path) if config_path else DEFAULT_CONFIG
     with open(config_path, "rb") as f:
@@ -69,6 +71,10 @@ def load_settings(
     overrides = {"max_iterations": max_iterations, "timeout_seconds": timeout_seconds, "token_budget": token_budget}
     limits = replace(limits, **{k: v for k, v in overrides.items() if v is not None})
 
+    hints = hints or agent.get("hints", "on")
+    if hints not in ("on", "off"):
+        raise ValueError(f"hints must be 'on' or 'off', got {hints!r}")
+
     return Settings(
         provider=provider,
         model=model,
@@ -77,4 +83,5 @@ def load_settings(
         prices_path=base / agent.get("prices_path", "prices.toml"),
         limits=limits,
         provider_options=options,
+        hints=hints == "on",
     )

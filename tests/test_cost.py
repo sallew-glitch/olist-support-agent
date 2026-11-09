@@ -35,6 +35,7 @@ def test_missing_prices_file_means_no_prices(tmp_path):
     assert load_prices(tmp_path / "absent.toml") == {}
 
 
-def test_shipped_prices_file_has_no_active_prices():
-    # Prices ship commented out until the user verifies them.
-    assert load_prices(ROOT / "prices.toml") == {}
+def test_shipped_prices_file_is_valid():
+    # Whatever the shipped file contains must parse and pass validation.
+    prices = load_prices(ROOT / "prices.toml")
+    assert all(set(p) >= {"input_per_mtok", "output_per_mtok"} for p in prices.values())

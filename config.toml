@@ -7,6 +7,8 @@ model = "claude-haiku-5-5"
 db_path = "data/olist.db"
 traces_dir = "traces"
 prices_path = "prices.toml"
+# "off" hides hint fields (delivery `note`, list `truncated`) from the model, for the hints experiment.
+hints = "on"
 
 [limits]
 max_iterations = 8        # max LLM calls per run

@@ -331,3 +331,22 @@ def execute_tool(conn: sqlite3.Connection, name: str, args: Any) -> dict:
     if len(json.dumps(result)) > MAX_RESULT_CHARS:
         return error("result_too_large", f"Result exceeded {MAX_RESULT_CHARS} characters.")
     return result
+
+
+# --- hints experiment ---------------------------------------------------------
+
+# Explanatory hint fields that --hints off hides from the model. Data fields (counts, totals,
+# nulls), the empty-list notes, the get_seller_stats note and error objects are never removed.
+HINT_FIELDS = {
+    "get_delivery_performance": ("note",),
+    "get_order_items": ("truncated",),
+    "get_order_payments": ("truncated",),
+}
+
+
+def apply_hints(tool_name: str, result: dict, hints: bool) -> dict:
+    """The tool result as the model will see it. With hints on, `result` is returned unchanged."""
+    if hints:
+        return result
+    hidden = HINT_FIELDS.get(tool_name, ())
+    return {key: value for key, value in result.items() if key not in hidden}

@@ -19,7 +19,7 @@ from typing import Callable
 from agent.cost import estimate_cost
 from agent.llm.base import LLMClient, LLMError, Message, ToolResult
 from agent.llm.retry import call_with_retry
-from agent.tools import execute_tool, tool_specs
+from agent.tools import apply_hints, execute_tool, tool_specs
 from agent.trace import Tracer, message_record
 
 SYSTEM_PROMPT = """\
@@ -73,6 +73,7 @@ def run_agent(
     prices: dict | None = None,
     clock: Callable[[], float] = time.monotonic,
     sleep: Callable[[float], None] = time.sleep,
+    hints: bool = True,
 ) -> RunResult:
     prices = prices or {}
     tools = tool_specs()
@@ -90,6 +91,8 @@ def run_agent(
         "run_start",
         provider=llm.provider,
         model=llm.model,
+        hints="on" if hints else "off",
+        request_params=llm.request_params(),
         limits=asdict(limits),
         system_prompt=SYSTEM_PROMPT,
         tools=[t["name"] for t in tools],
@@ -166,7 +169,8 @@ def run_agent(
         for call in response.message.tool_calls:
             t0 = clock()
             result = execute_tool(conn, call.name, call.arguments)
-            content = json.dumps(result, ensure_ascii=False)
+            visible = apply_hints(call.name, result, hints)
+            content = json.dumps(visible, ensure_ascii=False)
             is_error = "error" in result
             tracer.event(
                 "tool_call",
@@ -179,6 +183,8 @@ def run_agent(
                 is_error=is_error,
                 error_code=result["error"]["code"] if is_error else None,
                 result=result,
+                # Only present when the model saw something different from the raw result.
+                **({"model_visible_result": visible} if visible != result else {}),
             )
             results.append(ToolResult(call.id, content, is_error))
         messages.append(Message(role="tool", tool_results=results))

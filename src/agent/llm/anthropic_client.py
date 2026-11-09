@@ -64,6 +64,15 @@ class AnthropicClient(LLMClient):
         # SDK retries are off: retries happen in one place (agent.llm.retry) so they are visible in traces.
         self._client = anthropic.Anthropic(api_key=api_key, base_url=base_url, max_retries=0)
 
+    def request_params(self) -> dict:
+        # No thinking or sampling parameters are sent, so the API's defaults apply.
+        return {
+            "model": self.model,
+            "output_config": {"effort": self.effort} if self.effort else None,
+            "thinking_param_sent": False,
+            "sampling_params_sent": [],
+        }
+
     def complete(self, system, messages, tools, max_tokens, timeout) -> LLMResponse:
         kwargs = {
             "model": self.model,

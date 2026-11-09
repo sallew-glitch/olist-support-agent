@@ -77,6 +77,10 @@ class LLMClient(ABC):
     provider: str
     model: str
 
+    def request_params(self) -> dict:
+        """Everything sent with each request besides messages, tools and max_tokens (for traces)."""
+        return {"model": self.model, "sampling_params_sent": []}
+
     @abstractmethod
     def complete(
         self, system: str, messages: list[Message], tools: list[dict], max_tokens: int, timeout: float

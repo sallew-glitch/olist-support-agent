@@ -111,6 +111,9 @@ def test_anthropic_request_shape():
     assert sent["system"] == "sys"
     assert sent["output_config"] == {"effort": "low"}
     assert sent["tools"] == [tool]
+    # What the trace records about the request matches what was sent: no thinking or sampling params.
+    assert client.request_params()["output_config"] == sent["output_config"]
+    assert not {"thinking", "temperature", "top_p", "top_k"} & set(sent)
 
 
 # --- OpenAI-compatible ---
