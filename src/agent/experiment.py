@@ -226,6 +226,26 @@ def run_end(events: list[dict]) -> dict:
 # --- blind scoring sheet -----------------------------------------------------
 
 
+def sheet_row(row_id: str, question_id: str, events: list[dict]) -> dict:
+    """One unscored sheet row, built from the run's trace."""
+    end = run_end(events)
+    tools = tools_called(events)
+    flags = []
+    if extra_tools(question_id, tools):
+        flags.append("EXTRA TOOL: check trace")
+    if end["stop_reason"] != "final_answer":
+        flags.append(f"NO FINAL ANSWER ({end['stop_reason']})")
+    return {
+        "row_id": row_id,
+        "question_id": question_id,
+        "answer": end["final_answer"] or "",
+        "tools_called": "; ".join(tools),
+        "flag": "; ".join(flags),
+        "unsupported_claim": "",
+        "which_claim": "",
+    }
+
+
 def build_sheet(folder: Path, rng: random.Random) -> tuple[list[dict], list[dict]]:
     """Sheet rows (shuffled, no condition information) and key rows (row_id -> condition)."""
     runs = list(completed_entries(read_manifest(folder)).values())
@@ -233,23 +253,7 @@ def build_sheet(folder: Path, rng: random.Random) -> tuple[list[dict], list[dict
     sheet, key = [], []
     for row_id, entry in zip(row_ids, runs):
         trace = folder / entry["trace_file"]
-        events = load_events(trace)
-        end = run_end(events)
-        tools = tools_called(events)
-        flags = []
-        if extra_tools(entry["question_id"], tools):
-            flags.append("EXTRA TOOL: check trace")
-        if end["stop_reason"] != "final_answer":
-            flags.append(f"NO FINAL ANSWER ({end['stop_reason']})")
-        sheet.append({
-            "row_id": f"R{row_id}",
-            "question_id": entry["question_id"],
-            "answer": end["final_answer"] or "",
-            "tools_called": "; ".join(tools),
-            "flag": "; ".join(flags),
-            "unsupported_claim": "",
-            "which_claim": "",
-        })
+        sheet.append(sheet_row(f"R{row_id}", entry["question_id"], load_events(trace)))
         key.append({
             "row_id": f"R{row_id}",
             "run_key": entry["run_key"],
@@ -272,14 +276,36 @@ def write_csv(path: Path, columns: list[str], rows: list[dict]) -> None:
         writer.writerows(rows)
 
 
-def write_sheet(out_dir: Path, sheet: list[dict], key: list[dict], force: bool = False) -> None:
-    """Write sheet.csv and key.csv. Refuses to overwrite, so a rerun cannot scramble a sheet being scored."""
+def write_sheet(out_dir: Path, sheet: list[dict], key: list[dict], force: bool = False,
+                names: tuple[str, str] = ("sheet.csv", "key.csv"), key_columns: list[str] = KEY_COLUMNS) -> None:
+    """Write a sheet and its key. Refuses to overwrite, so a rerun cannot scramble a sheet being scored."""
     out_dir.mkdir(parents=True, exist_ok=True)
-    for name in ("sheet.csv", "key.csv"):
+    for name in names:
         if (out_dir / name).exists() and not force:
             raise FileExistsError(f"{out_dir / name} already exists; pass --force to overwrite.")
-    write_csv(out_dir / "sheet.csv", SHEET_COLUMNS, sheet)
-    write_csv(out_dir / "key.csv", KEY_COLUMNS, key)
+    write_csv(out_dir / names[0], SHEET_COLUMNS, sheet)
+    write_csv(out_dir / names[1], key_columns, key)
+
+
+RESCORE_KEY_COLUMNS = ["row_id", "original_row_id", *KEY_COLUMNS[1:]]
+
+
+def build_rescore(sheet: list[dict], key: list[dict], n_no: int, rng: random.Random, root: Path = ROOT):
+    """A blind re-scoring sheet: every yes/unclear row plus n_no random "no" rows, verdicts cleared,
+    new row_ids (prefix S, so they cannot be confused with the original R ids), shuffled."""
+    key_by_id = {k["row_id"]: k for k in key}
+    flagged = [r["row_id"] for r in sheet if normalize_score(r["unsupported_claim"]) in ("yes", "unclear")]
+    no_rows = [r["row_id"] for r in sheet if normalize_score(r["unsupported_claim"]) == "no"]
+    chosen = flagged + rng.sample(no_rows, n_no)
+    new_ids = rng.sample(range(1000, 10000), len(chosen))
+    rescore, rescore_key = [], []
+    for new_id, original_id in zip(new_ids, chosen):
+        k = key_by_id[original_id]
+        rescore.append(sheet_row(f"S{new_id}", k["question_id"], load_events(root / k["trace_file"])))
+        rescore_key.append({"row_id": f"S{new_id}", "original_row_id": original_id, **{c: k[c] for c in KEY_COLUMNS[1:]}})
+    rng.shuffle(rescore)
+    rescore_key.sort(key=lambda r: r["row_id"])
+    return rescore, rescore_key
 
 
 def csv_format(path: Path) -> tuple[str, str]:
@@ -358,6 +384,15 @@ def analyze(sheet: list[dict], key: list[dict], root: Path = ROOT) -> list[str]:
         exposed = sum(r["hint_exposed"] for r in cell)
         lines.append(f"{model:<20}{hints:<7}{qid:<4}{len(cell):>3}" + "".join(f"{counts[s]:>9}" for s in SCORES)
                      + f"{dups:>13}{exposed:>14}")
+
+    lines += ["", "Split by hint exposure per model x hints x question (counts out of N; exposed = a tool's raw result had a hint field)",
+              f"{'model':<20}{'hints':<7}{'q':<4}{'exposed':<9}{'N':>3}" + "".join(f"{s:>9}" for s in SCORES)]
+    for (model, hints, qid), cell in sorted(cells.items()):
+        for exposed in (True, False):
+            part = [r for r in cell if r["hint_exposed"] == exposed]
+            counts = Counter(r["score"] for r in part)
+            lines.append(f"{model:<20}{hints:<7}{qid:<4}{'yes' if exposed else 'no':<9}{len(part):>3}"
+                         + "".join(f"{counts[s]:>9}" for s in SCORES))
 
     lines += ["", "Totals per model x hints (counts out of N)", f"{'model':<20}{'hints':<7}{'N':>7}" + "".join(f"{s:>9}" for s in SCORES)]
     for (model, hints), group in sorted(totals.items()):

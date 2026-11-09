@@ -209,7 +209,7 @@ def test_analysis_handles_unclear_blank_and_invalid(finished, tmp_path):
     lines = ex.analyze(ex.read_csv(tmp_path / "s" / "sheet.csv"), ex.read_csv(tmp_path / "s" / "key.csv"))
     report = "\n".join(lines)
     assert "WARNING" in report and "invalid" in report  # "maybe" is reported, not silently merged
-    cell_lines = [l for l in lines if l.startswith(("claude-haiku", "claude-sonnet")) and " q" in l]
+    cell_lines = [l for l in lines if l.startswith("claude-") and len(l.split()) == 11]  # main per-cell table
     assert len(cell_lines) == 12  # one per model x hints x question
     assert "%" not in report
 
@@ -224,6 +224,52 @@ def test_analysis_counts_scores(finished, tmp_path):
     totals = [l.split() for l in lines[start:start + 4]]
     # Columns: model hints N yes no unclear blank invalid. N=3 each (repeats=1, 3 questions), all unclear.
     assert sorted((t[0], t[1], t[2], t[5]) for t in totals) == sorted((m, h, "3", "3") for m in ex.MODELS for h in ex.HINTS)
+
+
+def test_analysis_splits_scores_by_hint_exposure(finished):
+    folder, _ = finished
+    sheet, key = ex.build_sheet(folder, random.Random(0))
+    qid_by_row = {k["row_id"]: k["question_id"] for k in key}
+    for row in sheet:  # score exposed questions (q1, q2) "yes" and q3 "no"
+        row["unsupported_claim"] = "no" if qid_by_row[row["row_id"]] == "q3" else "yes"
+    lines = ex.analyze(sheet, key)
+    start = next(i for i, l in enumerate(lines) if l.startswith("Split by hint exposure")) + 2
+    split = [l.split() for l in lines[start:start + 24]]  # 12 cells x exposed yes/no
+    # Columns: model hints q exposed N yes no unclear blank invalid
+    for model, hints, qid, exposed, n, yes, no, *_ in split:
+        if qid in ("q1", "q2"):  # fake q1/q2 runs always get a hint field
+            assert (exposed, n, yes, no) == ("yes", "1", "1", "0") or (exposed, n) == ("no", "0")
+        else:  # fake q3 runs never do
+            assert (exposed, n, yes, no) == ("no", "1", "0", "1") or (exposed, n) == ("yes", "0")
+
+
+def test_rescore_sheet(finished):
+    folder, _ = finished
+    sheet, key = ex.build_sheet(folder, random.Random(0))
+    verdicts = ["yes", "unclear", "no", "no", "no", "no", "no", "no", "no", "YES ", "no", "no"]
+    for row, v in zip(sheet, verdicts):
+        row["unsupported_claim"], row["which_claim"] = v, "some claim"
+    flagged = {r["row_id"] for r in sheet if r["unsupported_claim"].strip().lower() in ("yes", "unclear")}
+
+    rescore, rescore_key = ex.build_rescore(sheet, key, n_no=4, rng=random.Random(1))
+    assert len(rescore) == len(rescore_key) == 3 + 4
+    assert all(list(r) == ex.SHEET_COLUMNS for r in rescore)
+    assert all(r["unsupported_claim"] == "" and r["which_claim"] == "" for r in rescore)  # verdicts cleared
+    new_ids = [r["row_id"] for r in rescore]
+    assert len(set(new_ids)) == 7 and not set(new_ids) & {r["row_id"] for r in sheet}
+    originals = {k["original_row_id"] for k in rescore_key}
+    assert flagged <= originals  # every yes/unclear row is included
+    original_by_id = {r["row_id"]: r for r in sheet}
+    assert sum(original_by_id[o]["unsupported_claim"] == "no" for o in originals) == 4
+    # The key maps back to the same run, and the answer is the same text.
+    key_by_id = {k["row_id"]: k for k in key}
+    rescore_by_id = {r["row_id"]: r for r in rescore}
+    for k in rescore_key:
+        orig = key_by_id[k["original_row_id"]]
+        assert (k["run_key"], k["model"], k["hints"], k["trace_file"]) == (orig["run_key"], orig["model"], orig["hints"], orig["trace_file"])
+        assert rescore_by_id[k["row_id"]]["answer"] == original_by_id[k["original_row_id"]]["answer"]
+    text = json.dumps(rescore).lower()
+    assert not any(leak in text for leak in ("haiku", "sonnet", "hints", ".jsonl"))
 
 
 def test_reads_sheet_resaved_by_excel(finished, tmp_path):
