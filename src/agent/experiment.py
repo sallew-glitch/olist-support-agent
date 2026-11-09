@@ -308,6 +308,62 @@ def build_rescore(sheet: list[dict], key: list[dict], n_no: int, rng: random.Ran
     return rescore, rescore_key
 
 
+def compare_rescore(original: list[dict], rescore: list[dict], rescore_key: list[dict]) -> list[str]:
+    """Agreement between the original verdicts and the blind re-scoring. Counts and disagreeing rows only;
+    never mentions model or hint condition."""
+    valid = ("yes", "no", "unclear")
+    original_by_id = {r["row_id"]: r for r in original}
+    key_by_id = {k["row_id"]: k for k in rescore_key}
+    lines = []
+
+    unmatched = sorted(r["row_id"] for r in rescore
+                       if r["row_id"] not in key_by_id or key_by_id[r["row_id"]]["original_row_id"] not in original_by_id)
+    if unmatched:
+        lines.append(f"WARNING: re-score rows with no matching original row (left out): {unmatched}")
+    not_in_sheet = sorted(set(key_by_id) - {r["row_id"] for r in rescore})
+    if not_in_sheet:
+        lines.append(f"WARNING: rows in rescore_key.csv but not in rescore_sheet.csv: {not_in_sheet}")
+
+    pairs = []
+    for r in sorted(rescore, key=lambda r: r["row_id"]):
+        if r["row_id"] in unmatched:
+            continue
+        orig = original_by_id[key_by_id[r["row_id"]]["original_row_id"]]
+        pairs.append({
+            "row_id": r["row_id"],
+            "original_row_id": orig["row_id"],
+            "question_id": r["question_id"],
+            "original": normalize_score(orig["unsupported_claim"]),
+            "rescore": normalize_score(r["unsupported_claim"]),
+            "original_claim": (orig["which_claim"] or "").strip(),
+            "rescore_claim": (r["which_claim"] or "").strip(),
+        })
+
+    for side in ("original", "rescore"):
+        bad = [f"{p['row_id']}={p[side]}" for p in pairs if p[side] not in valid]
+        if bad:
+            lines.append(f"WARNING: blank or invalid {side} verdicts (counted, not compared): {bad}")
+
+    agree = [p for p in pairs if p["original"] == p["rescore"] and p["original"] in valid]
+    disagree = [p for p in pairs if p["original"] != p["rescore"] and p["original"] in valid and p["rescore"] in valid]
+    not_comparable = [p for p in pairs if p["original"] not in valid or p["rescore"] not in valid]
+    lines += ["", f"Rows compared: {len(pairs)} | agree: {len(agree)} | disagree: {len(disagree)} | "
+                  f"not comparable (blank/invalid): {len(not_comparable)}",
+              "", "Counts by verdict pair", f"{'original':<10}{'rescore':<10}{'count':>6}"]
+    for (o, n), count in sorted(Counter((p["original"], p["rescore"]) for p in pairs).items()):
+        lines.append(f"{o:<10}{n:<10}{count:>6}")
+
+    for title, group in (("Disagreeing rows", disagree), ("Not comparable rows", not_comparable)):
+        if group:
+            lines += ["", title]
+            for p in group:
+                lines += [f"- {p['row_id']} (original {p['original_row_id']}) {p['question_id']}: "
+                          f"original={p['original']} rescore={p['rescore']}",
+                          f"    original which_claim: {p['original_claim'] or '(empty)'}",
+                          f"    rescore which_claim:  {p['rescore_claim'] or '(empty)'}"]
+    return lines
+
+
 def csv_format(path: Path) -> tuple[str, str]:
     """(encoding, delimiter) of a sheet: as written by write_csv, or after Excel re-saved it
     (Excel on Windows may save as Windows-1252 and/or tab-delimited text)."""
