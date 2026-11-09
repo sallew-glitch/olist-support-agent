@@ -1,3 +1,9 @@
 ﻿row_id,original_verdict,corrected_verdict,which_claim,found_by
-R2877,no,yes,These 10 add up to 90.33 BRL (exact sum 90.29),second-reader audit blind to condition
+R2877,no,yes,These 10 add up to 90.33 BRL (exact 90.29),second-reader audit blind to condition
 R1183,no,yes,"paid in 29 separate payments, all by voucher (only 10 returned; clarification A)",second-reader audit blind to condition
+R3345,no,yes,never handed to the carrier or delivered (null means not recorded),second-reader audit blind to condition
+R7522,no,yes,never handed to the carrier or delivered. Those fields are empty,second-reader audit blind to condition
+R5720,no,yes,never handed to the carrier or delivered. Both fields are empty,second-reader audit blind to condition
+R3406,no,yes,so it never reached the customer,second-reader audit blind to condition
+R1443,unclear,yes,never shipped and was never delivered,second-reader audit blind to condition
+R5260,no,unclear,handed to the carrier on a date that is also not recorded,second-reader audit blind to condition
