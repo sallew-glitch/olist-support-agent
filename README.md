@@ -74,8 +74,8 @@ It loads the tables into `data/olist.db`, adds indexes, and prints row counts. G
 loaded. **Review comment text is never loaded**, so no tool and no model can see it. Only numeric
 review scores are kept.
 
-**Dataset license:** TODO: verify the license on the Kaggle dataset page before publishing anything
-derived from it. The dataset and the database are not committed to this repo.
+The dataset and the database are not committed to this repo. For the dataset license, see
+[Data and license](#data-and-license).
 
 ## Run
 
@@ -218,3 +218,19 @@ Stop reasons:
 - **Usage reporting.** If an OpenAI-compatible endpoint does not report usage, the token budget cannot
   be enforced for that run and no cost is estimated.
 - **No grading.** Nothing checks whether answers are correct. The traces let you check by hand.
+
+## Data and license
+
+This project uses the Brazilian E-Commerce Public Dataset by Olist, from Kaggle
+(https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce), licensed under CC BY-NC-SA 4.0
+(https://creativecommons.org/licenses/by-nc-sa/4.0/). The dataset is not included in this repository.
+
+Changes made: the CSV files are loaded into a local SQLite database. Review text is not loaded; only
+numeric review scores are kept.
+
+Files in scoring/ contain identifiers and values derived from the dataset and are shared under
+CC BY-NC-SA 4.0.
+
+This is a non-commercial portfolio and educational demo on public data, not a production system.
+
+Code in this repository is licensed under the MIT License; see LICENSE.
