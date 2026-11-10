@@ -13,10 +13,8 @@ Reads only. Writes assets/never_counts_q3.png (1080 px) and assets/never_counts_
 """
 
 import argparse
-import json
 import sys
 from dataclasses import dataclass
-from datetime import date
 from pathlib import Path
 
 try:
@@ -26,7 +24,7 @@ except ImportError:  # running with a Python outside the project venv (e.g. one 
 
 from agent.config import ROOT
 from agent.experiment import (
-    PLAN_FILE, analyze, completed_entries, hint_exposed, load_events, read_csv, read_manifest, run_end, says_never,
+    analyze, completed_entries, hint_exposed, load_events, read_csv, read_manifest, run_end, says_never,
     tools_called,
 )
 from agent.tools import DELIVERY_NOTE
@@ -103,7 +101,7 @@ def check(cells: dict, expected: dict) -> list[str]:
     return problems
 
 
-def texts(cells: dict[tuple[str, str], list[Run]], folder: Path) -> dict[str, str]:
+def texts(cells: dict[tuple[str, str], list[Run]]) -> dict[str, str]:
     """All text on the image. Numbers are computed from the cells."""
     (n,) = {len(runs) for runs in cells.values()}
     (effort,) = {r.effort for runs in cells.values() for r in runs}
@@ -114,8 +112,6 @@ def texts(cells: dict[tuple[str, str], list[Run]], folder: Path) -> dict[str, st
     else:
         called_text = (f"{model_label(haiku).split()[0]} called the delivery tool in {called['on']} of {n} runs with the note on "
                        f"and {called['off']} of {n} with it off.")
-    plan = json.loads((folder / PLAN_FILE).read_text(encoding="utf-8"))
-    commit = (plan.get("git") or {}).get("commit") or "unknown"
     return {
         "title": "Answers saying \u201cnever\u201d about a canceled order",
         "subtitle": f"Delivery and carrier dates were blank in the data. {n} runs per cell.",
@@ -123,7 +119,6 @@ def texts(cells: dict[tuple[str, str], list[Run]], folder: Path) -> dict[str, st
         "fine_print": (f"Claude {model_label(haiku)} and {model_label(sonnet)}, {effort} thinking effort. {called_text} "
                        "Word count; the word was chosen after reading the answers. "
                        "Data: Olist (Kaggle), CC BY-NC-SA 4.0. Demo on public data, not production."),
-        "provenance": f"Source: {folder.name} \u00b7 commit {commit[:7]} \u00b7 generated {date.today().isoformat()}",
         "legend_filled": "says \u201cnever\u201d",
         "legend_hollow": "does not",
         "legend_dashed": "delivery tool not called",
@@ -212,10 +207,10 @@ def render(cells: dict[tuple[str, str], list[Run]], t: dict[str, str], out: Path
     y = MARGIN - 6
     y = block("title", t["title"], y, 56, "bold", line_height=1.12) + 16
     y = block("subtitle", t["subtitle"], y, 36, "regular", MUTED) + 22
-    y = block("caption", t["caption"], y, 34, "semibold") + 26
+    y = block("caption", t["caption"], y, 34, "semibold") + 30
 
     # Chart: model label spans its two rows; then "note on/off"; then 5 circles; count right-aligned.
-    row_h, group_gap, r = 72, 28, 24
+    row_h, group_gap, r = 78, 30, 26
     groups = [ROW_ORDER[:2], ROW_ORDER[2:]]
     model_w = max(width(model_label(m), 36, "bold") for m, _ in ROW_ORDER)
     note_w = max(width(f"note {h}", 36, "regular") for _, h in ROW_ORDER)
@@ -246,7 +241,7 @@ def render(cells: dict[tuple[str, str], list[Run]], t: dict[str, str], out: Path
                     fontsize=pt(64), color=INK, va="center_baseline", ha="right")
             y += row_h
     layout.append(("chart", round(chart_top), round(y), 4))
-    y += 22
+    y += 26
 
     # Legend: one line if it fits, otherwise wrapped item by item.
     lx, ly, lr, lpx = MARGIN + 14, y + 22, 14, 30
@@ -264,8 +259,7 @@ def render(cells: dict[tuple[str, str], list[Run]], t: dict[str, str], out: Path
     layout.append(("legend", round(legend_top), round(y), 1 + round((ly - legend_top - 22) / 44)))
     y += 24
 
-    y = block("fine_print", t["fine_print"], y, 26, "regular", MUTED, line_height=1.25) + 4
-    y = block("provenance", t["provenance"], y, 26, "regular", MUTED, line_height=1.25)
+    y = block("fine_print", t["fine_print"], y, 26, "regular", MUTED, line_height=1.25)
 
     if y > SIZE - MARGIN + 16:
         sys.exit(f"Content runs to y={y:.0f}, past the bottom margin ({SIZE - MARGIN}). Layout: {layout}")
@@ -295,7 +289,7 @@ def main(argv=None) -> int:
     if problems:
         print("STOP: the chart data does not match:\n  " + "\n  ".join(problems))
         return 1
-    t = texts(cells, args.experiment)
+    t = texts(cells)
     out_2x = args.out.with_name(args.out.stem + "@2x" + args.out.suffix)
     for line in render(cells, t, args.out, out_2x):
         print("  " + line)

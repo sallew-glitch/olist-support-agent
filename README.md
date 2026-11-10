@@ -37,6 +37,10 @@ scripts/
   prepare_data.py      zip/CSVs -> data/olist.db
   run_questions.py     run a file of questions through the agent
   summarize_traces.py  per-model summary of a traces folder
+  run_experiment.py, make_scoring_sheet.py, make_rescore_sheet.py, compare_rescore.py,
+  analyze_experiment.py, make_visual.py   the hints experiment (see below)
+scoring/               scoring rule, facts, blind sheet, key and corrections for the experiment
+assets/                the experiment chart
 tests/                 offline tests (FakeLLM, tiny fixture DB, network blocked)
 questions/             example questions
 data/, traces/, .env   gitignored
@@ -117,6 +121,61 @@ python scripts/summarize_traces.py
 - tool calls and tool errors by type
 - total tokens
 - total estimated cost (when prices were configured)
+
+## Experiment: hints in tool results
+
+Some tool results carry a hint for the model. When a delivery date is missing,
+`get_delivery_performance` adds a `note`: *"No customer delivery date is recorded for this order."*
+Item and payment lists add a `truncated` message when they are capped. `--hints off` removes these
+fields from what the model sees (`HINT_FIELDS` in `tools.py`). Everything else in the result stays the
+same, and the trace keeps both the raw result and the version the model saw.
+
+The experiment (folder `experiment_2026-11-09`) ran 60 runs:
+- Claude Haiku 5.5 and Sonnet 5.5, with hints on and off
+- 3 questions, 5 repeats each
+- low effort
+- shuffled with a fixed seed
+
+`scoring/SCORING.md` and `scoring/facts.md` were committed before the first run. The answers were
+then scored by hand on a blind sheet, with no model or condition shown. A second reader's audit, also
+blind to the condition, is recorded in `scoring/corrections.csv`. The analysis prints raw counts only.
+
+<p align="center">
+  <img src="assets/never_counts_q3.png" width="540"
+       alt="Dot chart of q3 answers saying never. Sonnet 5.5: 0 of 5 with the note on, 4 of 5 with it off. Haiku 5.5: 2 of 5 in both conditions.">
+</p>
+
+The chart covers q3 only: *"What happened to order e5fa5a7210941f7d56d0208e4e071d35, and how was it
+paid?"* The order was canceled, and its carrier and delivery dates are blank in the data. Each circle
+is one run. A filled circle means the answer contains the whole word "never". Counts out of 5:
+
+| Model | Note on | Note off |
+|---|---|---|
+| Sonnet 5.5 | 0 | 4 |
+| Haiku 5.5 | 2 | 2 |
+
+Of the 8 answers that say "never":
+- 6 say the order was never handed to the carrier, a date the note does not mention
+- 5 also say the order was never delivered
+
+Read the chart with these limits in mind:
+- 5 runs per cell, one question, low effort.
+- Haiku called the delivery tool in only 2 of 5 runs per condition, so it saw the note in only 2 runs
+  (dashed circles mark the runs that did not call it).
+- The word "never" was chosen after reading the answers. This count is exploratory and mechanical,
+  not a verdict.
+
+```powershell
+python scripts/run_experiment.py                 # preview: run count and cost estimate, no API calls
+python scripts/run_experiment.py --yes           # run (resumable; spend guard via --max-cost)
+python scripts/make_scoring_sheet.py traces/experiment_2026-11-09
+python scripts/analyze_experiment.py             # raw counts, then "after corrections" tables
+python scripts/make_visual.py                    # needs matplotlib; writes assets/never_counts_q3*.png
+```
+
+Traces are gitignored, so the chart can be regenerated only from a local experiment folder.
+`make_visual.py` compares its counts with the analysis output before drawing, and stops if they
+differ. The note text in its caption is read from the tool code.
 
 ## Tests
 

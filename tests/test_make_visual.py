@@ -93,19 +93,18 @@ def run(repeat, delivery, never=False):
     return mv.Run(repeat=repeat, says_never=never, exposed=delivery, called_delivery=delivery, effort="low")
 
 
-def test_texts_are_computed_and_note_comes_from_the_tool_constant(tmp_path):
-    (tmp_path / ex.PLAN_FILE).write_text(json.dumps({"git": {"commit": "0123456789abcdef"}}), encoding="utf-8")
+def test_texts_are_computed_and_note_comes_from_the_tool_constant():
     cells = {cell: [run(i, delivery=i <= 2) for i in range(1, 6)] for cell in mv.ROW_ORDER}
-    t = mv.texts(cells, tmp_path)
+    t = mv.texts(cells)
     assert t["caption"] == f"The note: “{DELIVERY_NOTE}”"
     assert "5 runs per cell." in t["subtitle"]
     assert "Claude Haiku 5.5 and Sonnet 5.5, low thinking effort." in t["fine_print"]
     assert "Haiku called the delivery tool in 2 of 5 runs per condition." in t["fine_print"]
-    assert "commit 0123456" in t["provenance"]
+    assert "provenance" not in t
     assert "“never”" in t["title"] and '"' not in "".join(t.values())  # curly quotes only
 
     cells[("claude-haiku-5-5", "off")] = [run(i, delivery=i <= 3) for i in range(1, 6)]
-    assert "in 2 of 5 runs with the note on and 3 of 5 with it off." in mv.texts(cells, tmp_path)["fine_print"]
+    assert "in 2 of 5 runs with the note on and 3 of 5 with it off." in mv.texts(cells)["fine_print"]
 
 
 def test_model_label():
