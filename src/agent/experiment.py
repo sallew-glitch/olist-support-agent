@@ -398,8 +398,71 @@ def duplicate_count(answers: list[str | None]) -> int:
     return sum(n for n in counts.values() if n > 1)
 
 
-def analyze(sheet: list[dict], key: list[dict], root: Path = ROOT) -> list[str]:
-    """Raw counts only: no percentages, no tests, no conclusions."""
+def _score_tables(rows: list[dict], suffix: str = "") -> list[str]:
+    """Per-cell table, hint-exposure split and per-condition totals of verdicts."""
+    cells, totals = defaultdict(list), defaultdict(list)
+    for r in rows:
+        cells[(r["model"], r["hints"], r["question_id"])].append(r)
+        totals[(r["model"], r["hints"])].append(r)
+
+    header = (f"{'model':<20}{'hints':<7}{'q':<4}{'N':>3}" + "".join(f"{s:>9}" for s in SCORES)
+              + f"{'dup_answers':>13}{'hint_exposed':>14}")
+    lines = ["", f"Unsupported claims per model x hints x question (counts out of N){suffix}", header]
+    for (model, hints, qid), cell in sorted(cells.items()):
+        counts = Counter(r["score"] for r in cell)
+        dups = duplicate_count([r["end"]["final_answer"] for r in cell])
+        exposed = sum(r["hint_exposed"] for r in cell)
+        lines.append(f"{model:<20}{hints:<7}{qid:<4}{len(cell):>3}" + "".join(f"{counts[s]:>9}" for s in SCORES)
+                     + f"{dups:>13}{exposed:>14}")
+
+    lines += ["", f"Split by hint exposure per model x hints x question (counts out of N; exposed = a tool's raw result had a hint field){suffix}",
+              f"{'model':<20}{'hints':<7}{'q':<4}{'exposed':<9}{'N':>3}" + "".join(f"{s:>9}" for s in SCORES)]
+    for (model, hints, qid), cell in sorted(cells.items()):
+        for exposed in (True, False):
+            part = [r for r in cell if r["hint_exposed"] == exposed]
+            counts = Counter(r["score"] for r in part)
+            lines.append(f"{model:<20}{hints:<7}{qid:<4}{'yes' if exposed else 'no':<9}{len(part):>3}"
+                         + "".join(f"{counts[s]:>9}" for s in SCORES))
+
+    lines += ["", f"Totals per model x hints (counts out of N){suffix}", f"{'model':<20}{'hints':<7}{'N':>7}" + "".join(f"{s:>9}" for s in SCORES)]
+    for (model, hints), group in sorted(totals.items()):
+        counts = Counter(r["score"] for r in group)
+        lines.append(f"{model:<20}{hints:<7}{len(group):>7}" + "".join(f"{counts[s]:>9}" for s in SCORES))
+    return lines
+
+
+def apply_corrections(rows: list[dict], corrections: list[dict]) -> tuple[list[dict], list[str]]:
+    """Rows with corrected verdicts, plus report lines. A correction is applied only if its row exists once
+    in the corrections, its original_verdict matches the sheet, and its corrected_verdict is valid."""
+    by_id = {r["row_id"]: r for r in rows}
+    ids = Counter((c["row_id"] or "").strip() for c in corrections)
+    applied, lines = {}, []
+    for c in corrections:
+        row_id = (c["row_id"] or "").strip()
+        original, corrected = normalize_score(c["original_verdict"]), normalize_score(c["corrected_verdict"])
+        if ids[row_id] > 1:
+            lines.append(f"WARNING: {row_id} appears {ids[row_id]} times in corrections; not applied.")
+        elif row_id not in by_id:
+            lines.append(f"WARNING: correction for unknown row {row_id!r}; not applied.")
+        elif original != by_id[row_id]["score"]:
+            lines.append(f"WARNING: {row_id}: corrections say original was {original}, sheet has "
+                         f"{by_id[row_id]['score']}; not applied.")
+        elif corrected not in ("yes", "no", "unclear"):
+            lines.append(f"WARNING: {row_id}: corrected_verdict {c['corrected_verdict']!r} is not yes/no/unclear; not applied.")
+        else:
+            applied[row_id] = c
+    for row_id, c in applied.items():
+        lines.append(f"- {row_id} [CORRECTED] {by_id[row_id]['question_id']}: {by_id[row_id]['score']} -> "
+                     f"{normalize_score(c['corrected_verdict'])} | {(c.get('which_claim') or '').strip()} | "
+                     f"found by: {(c.get('found_by') or '').strip()}")
+    corrected_rows = [{**r, "score": normalize_score(applied[r["row_id"]]["corrected_verdict"])} if r["row_id"] in applied else r
+                      for r in rows]
+    return corrected_rows, lines
+
+
+def analyze(sheet: list[dict], key: list[dict], root: Path = ROOT, corrections: list[dict] | None = None) -> list[str]:
+    """Raw counts only: no percentages, no tests, no conclusions. With corrections, the as-scored output is
+    printed unchanged and an "after corrections" set of tables follows at the end."""
     lines = []
     key_by_id = {r["row_id"]: r for r in key}
     sheet_by_id = {r["row_id"]: r for r in sheet}
@@ -426,35 +489,11 @@ def analyze(sheet: list[dict], key: list[dict], root: Path = ROOT) -> list[str]:
     if invalid:
         lines.append(f"WARNING: unsupported_claim values other than yes/no/unclear/blank in rows: {invalid}")
 
-    cells, totals = defaultdict(list), defaultdict(list)
+    lines += _score_tables(rows)
+
+    totals = defaultdict(list)
     for r in rows:
-        cells[(r["model"], r["hints"], r["question_id"])].append(r)
         totals[(r["model"], r["hints"])].append(r)
-
-    header = (f"{'model':<20}{'hints':<7}{'q':<4}{'N':>3}" + "".join(f"{s:>9}" for s in SCORES)
-              + f"{'dup_answers':>13}{'hint_exposed':>14}")
-    lines += ["", "Unsupported claims per model x hints x question (counts out of N)", header]
-    for (model, hints, qid), cell in sorted(cells.items()):
-        counts = Counter(r["score"] for r in cell)
-        dups = duplicate_count([r["end"]["final_answer"] for r in cell])
-        exposed = sum(r["hint_exposed"] for r in cell)
-        lines.append(f"{model:<20}{hints:<7}{qid:<4}{len(cell):>3}" + "".join(f"{counts[s]:>9}" for s in SCORES)
-                     + f"{dups:>13}{exposed:>14}")
-
-    lines += ["", "Split by hint exposure per model x hints x question (counts out of N; exposed = a tool's raw result had a hint field)",
-              f"{'model':<20}{'hints':<7}{'q':<4}{'exposed':<9}{'N':>3}" + "".join(f"{s:>9}" for s in SCORES)]
-    for (model, hints, qid), cell in sorted(cells.items()):
-        for exposed in (True, False):
-            part = [r for r in cell if r["hint_exposed"] == exposed]
-            counts = Counter(r["score"] for r in part)
-            lines.append(f"{model:<20}{hints:<7}{qid:<4}{'yes' if exposed else 'no':<9}{len(part):>3}"
-                         + "".join(f"{counts[s]:>9}" for s in SCORES))
-
-    lines += ["", "Totals per model x hints (counts out of N)", f"{'model':<20}{'hints':<7}{'N':>7}" + "".join(f"{s:>9}" for s in SCORES)]
-    for (model, hints), group in sorted(totals.items()):
-        counts = Counter(r["score"] for r in group)
-        lines.append(f"{model:<20}{hints:<7}{len(group):>7}" + "".join(f"{counts[s]:>9}" for s in SCORES))
-
     lines += ["", "Runs per model x hints (from the traces)",
               f"{'model':<20}{'hints':<7}{'runs':>6}{'avg_iter':>10}{'extra_tool':>12}{'tokens_in':>11}{'tokens_out':>12}{'est_cost_usd':>14}"]
     for (model, hints), group in sorted(totals.items()):
@@ -469,4 +508,10 @@ def analyze(sheet: list[dict], key: list[dict], root: Path = ROOT) -> list[str]:
     lines += ["", "dup_answers = answers in the cell that are exact string duplicates of another answer in the same cell.",
               "hint_exposed = runs that called a tool whose raw result contained a field --hints off removes "
               "(for hints=off runs the model did not see that field)."]
+
+    if corrections is not None:
+        corrected_rows, report = apply_corrections(rows, corrections)
+        lines += ["", "=" * 40, "AFTER CORRECTIONS (scoring/sheet.csv is unchanged; corrections from corrections.csv)",
+                  "Corrected rows:" if any(l.startswith("- ") for l in report) else "Corrected rows: none applied", *report]
+        lines += _score_tables(corrected_rows, suffix=" - after corrections")
     return lines
