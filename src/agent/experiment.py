@@ -12,6 +12,7 @@ Files in an experiment folder (traces/experiment_<date>/):
 import csv
 import json
 import random
+import re
 import subprocess
 from collections import Counter, defaultdict
 from dataclasses import dataclass
@@ -431,6 +432,35 @@ def _score_tables(rows: list[dict], suffix: str = "") -> list[str]:
     return lines
 
 
+NEVER = re.compile(r"\bnever\b", re.IGNORECASE)
+NOT_RECORDED = re.compile(r"no date recorded|not recorded|no record", re.IGNORECASE)
+
+
+def says_never(answer: str | None) -> bool:
+    """Does the answer contain the whole word "never" (case-insensitive)? Used by the analysis and the chart."""
+    return bool(NEVER.search(answer or ""))
+
+
+def says_not_recorded(answer: str | None) -> bool:
+    return bool(NOT_RECORDED.search(answer or ""))
+
+
+def _mechanical_counts(rows: list[dict]) -> list[str]:
+    """Exploratory phrase counts over the final answers (from the traces). Not verdicts."""
+    cells = defaultdict(list)
+    for r in rows:
+        cells[(r["model"], r["hints"], r["question_id"])].append(r["end"]["final_answer"])
+    lines = ["", "Mechanical, exploratory: phrase counts in final answers (from the traces; not verdicts)",
+             f"{'model':<20}{'hints':<7}{'q':<4}{'answers':>8}{'never':>8}{'not_recorded':>14}"]
+    for (model, hints, qid), answers in sorted(cells.items()):
+        never = sum(says_never(a) for a in answers)
+        not_recorded = sum(says_not_recorded(a) for a in answers)
+        lines.append(f"{model:<20}{hints:<7}{qid:<4}{len(answers):>8}{never:>8}{not_recorded:>14}")
+    lines += ['never = answers containing the whole word "never" (case-insensitive).',
+              'not_recorded = answers containing "no date recorded", "not recorded" or "no record" (case-insensitive).']
+    return lines
+
+
 def apply_corrections(rows: list[dict], corrections: list[dict]) -> tuple[list[dict], list[str]]:
     """Rows with corrected verdicts, plus report lines. A correction is applied only if its row exists once
     in the corrections, its original_verdict matches the sheet, and its corrected_verdict is valid."""
@@ -508,6 +538,7 @@ def analyze(sheet: list[dict], key: list[dict], root: Path = ROOT, corrections: 
     lines += ["", "dup_answers = answers in the cell that are exact string duplicates of another answer in the same cell.",
               "hint_exposed = runs that called a tool whose raw result contained a field --hints off removes "
               "(for hints=off runs the model did not see that field)."]
+    lines += _mechanical_counts(rows)
 
     if corrections is not None:
         corrected_rows, report = apply_corrections(rows, corrections)

@@ -18,6 +18,7 @@ MAX_ITEMS = 20
 MAX_PAYMENTS = 10
 MAX_TOP_CATEGORIES = 5
 MAX_RESULT_CHARS = 4000  # final guard; per-tool caps keep results well below this
+DELIVERY_NOTE = "No customer delivery date is recorded for this order."  # hint field (see apply_hints)
 
 
 def error(code: str, message: str) -> dict:
@@ -94,7 +95,7 @@ def get_delivery_performance(conn: sqlite3.Connection, args: dict) -> dict:
         "is_late": None if days is None else days > 0,
     }
     if delivered is None:
-        result["note"] = "No customer delivery date is recorded for this order."
+        result["note"] = DELIVERY_NOTE
     return result
 
 
