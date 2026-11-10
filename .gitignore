@@ -17,3 +17,6 @@ __pycache__/
 .pytest_cache/
 build/
 dist/
+
+# Personal notes (not part of the project)
+brand-context.md
